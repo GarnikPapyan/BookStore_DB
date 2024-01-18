@@ -12,10 +12,15 @@ public class Main {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             System.out.println("Successful connection to PostgreSQL ");
             Books books = new Books(connection);
-            books.createListGenre("novel");
-
-            //createListGenre(connection,"novel");
-            commandLine();
+            CustomerManagement customerManagement = new CustomerManagement(connection);
+          //  books.createListGenre();
+//            books.addNewRow();
+//            books.deleteRow();
+//            books.createListGenre();
+//            books.updateBookDetails();
+            //customerManagement.deleteRow();
+            customerManagement.viewPurchaseHistory();
+           // commandLine();
             //Retrieve a list of all books sold, including the book title, customer
             //name, and date of sale..
             String sqlQuery =   "SELECT books.Title,  Customers.Name, Sales.DateOfSale " +
@@ -81,17 +86,16 @@ public class Main {
             statement.execute(sqlTrigger);
         }
 
-
     }
 
-    public static void updateBookDetails(Connection connection,int quantityInStock,int bookId) throws SQLException {
-        String sqlUpdate = "UPDATE Books SET QuantityInStock = ? WHERE BookId = ? ";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate)) {
-            preparedStatement.setInt(1,quantityInStock);
-            preparedStatement.setInt(2,bookId);
-            preparedStatement.executeUpdate();
-        }
-    }
+//    public static void updateBookDetails(Connection connection,int quantityInStock,int bookId) throws SQLException {
+//        String sqlUpdate = "UPDATE Books SET QuantityInStock = ? WHERE BookId = ? ";
+//        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate)) {
+//            preparedStatement.setInt(1,quantityInStock);
+//            preparedStatement.setInt(2,bookId);
+//            preparedStatement.executeUpdate();
+//        }
+//    }
 
 //    public static void createListGenre(Connection connection,String genre) throws SQLException {
 //        String sqlGenre = "SELECT * FROM books WHERE Genre = ? ";
@@ -126,7 +130,7 @@ public class Main {
                         String str2 = scanner.nextLine();
                         switch (str2) {
                             case "1" -> {
-                                System.out.println("yoo");
+                                System.out.println("Enter BookId ");
                                 out = true;
                             }
                             case "2" -> {

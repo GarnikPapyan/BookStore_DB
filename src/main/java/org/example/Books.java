@@ -16,6 +16,7 @@ public class Books {
             String sqlAdd = "INSERT INTO Books(Title,Author,Genre,Price,QuantityInStock) VALUES (?,?,?,?,?) ";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd)){
                 boolean out = false;
+
                 System.out.println("Add book Title");
                 String title = scanner.nextLine();
                 System.out.println("Add book Author");
@@ -46,7 +47,7 @@ public class Books {
                         scanner.next();
                     }
                 }
-
+                scanner.nextLine();
                 preparedStatement.setString(1,title);
                 preparedStatement.setString(2,author);
                 preparedStatement.setString(3,genre);

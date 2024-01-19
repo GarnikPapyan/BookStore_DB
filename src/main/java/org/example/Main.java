@@ -11,12 +11,21 @@ public class Main {
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             System.out.println("Successful connection to PostgreSQL ");
-
-
-
+            CreateTables createTables = new CreateTables(connection);
             Books books = new Books(connection);
             CustomerManagement customerManagement = new CustomerManagement(connection);
             SalesProcessing salesProcessing = new SalesProcessing(connection);
+
+            createTables.createBooksTable();
+            createTables.createCustomersTable();
+            createTables.createSalesTable();
+
+            if(!(createTables.checkDataExistence())) {
+                createTables.insertBook();
+                createTables.insertCustomer();
+                createTables.insertSales();
+                createTrigger(connection);
+            }
 
             boolean out = false;
             while (!out) {
@@ -118,22 +127,24 @@ public class Main {
     }
 
     public static void createTrigger(Connection connection) throws SQLException {
-        String sqlFunction = " CREATE OR REPLACE FUNCTION update_books_quantity_in_stock() " +
-                " RETURNS TRIGGER AS $$ " +
-                " BEGIN " +
-                "    UPDATE Books " +
-                "    SET QuantityInStock = QuantityInStock - NEW.QuantitySold " +
-                "    WHERE BookID = NEW.BookID; " +
-                "    RETURN NEW; " +
-                " END;           " +
-                " $$ LANGUAGE plpgsql; " ;
-        String sqlTrigger = "CREATE TRIGGER update_books_quantity " +
-                "AFTER INSERT ON Sales " +
-                "FOR EACH ROW " +
-                "EXECUTE FUNCTION update_books_quantity_in_stock(); " ;
-        try(Statement statement = connection.createStatement()) {
-            statement.execute(sqlFunction);
-            statement.execute(sqlTrigger);
-        }
+
+            String sqlFunction = " CREATE OR REPLACE FUNCTION update_books_quantity_in_stock() " +
+                    " RETURNS TRIGGER AS $$ " +
+                    " BEGIN " +
+                    "    UPDATE Books " +
+                    "    SET QuantityInStock = QuantityInStock - NEW.QuantitySold " +
+                    "    WHERE BookID = NEW.BookID; " +
+                    "    RETURN NEW; " +
+                    " END;           " +
+                    " $$ LANGUAGE plpgsql; " ;
+            String sqlTrigger = "CREATE TRIGGER update_books_quantity " +
+                    "AFTER INSERT ON Sales " +
+                    "FOR EACH ROW " +
+                    "EXECUTE FUNCTION update_books_quantity_in_stock(); " ;
+            try(Statement statement = connection.createStatement()) {
+                statement.execute(sqlFunction);
+                statement.execute(sqlTrigger);
+            }
+
     }
 }

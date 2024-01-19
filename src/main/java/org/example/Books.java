@@ -16,7 +16,7 @@ public class Books {
             String sqlAdd = "INSERT INTO Books(Title,Author,Genre,Price,QuantityInStock) VALUES (?,?,?,?,?) ";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd)){
                 boolean out = false;
-
+                connection.setAutoCommit(false);
                 System.out.println("Add book Title");
                 String title = scanner.nextLine();
                 System.out.println("Add book Author");
@@ -55,7 +55,12 @@ public class Books {
                 preparedStatement.setInt(5,quantityInStock);
 
                 preparedStatement.executeUpdate();
+                connection.commit();
                 System.out.println("Added was successful");
+            } catch (SQLException e) {
+                connection.rollback();
+            } finally {
+                connection.setAutoCommit(true);
             }
     }
 
@@ -63,6 +68,7 @@ public class Books {
     public void deleteRow() throws SQLException {
         String sqlDelete = "DELETE FROM books WHERE BookId = ? ";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete)){
+
             int bookId = -1;
             boolean out = false;
             while (!out) {
@@ -131,6 +137,7 @@ public class Books {
     public void updateBookDetails() throws SQLException {
         String sqlUpdate = "UPDATE Books SET QuantityInStock = ? WHERE BookId = ? ";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate)) {
+            connection.setAutoCommit(false);
             int bookId = 0;
             boolean out = false;
             while (!out) {
@@ -168,7 +175,12 @@ public class Books {
             preparedStatement.setInt(1,quantityInStock);
             preparedStatement.setInt(2,bookId);
             preparedStatement.executeUpdate();
+            connection.commit();
             System.out.println("Book details update was successful!");
+        } catch (SQLException e) {
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 

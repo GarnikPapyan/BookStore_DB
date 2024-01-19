@@ -29,7 +29,7 @@ public class Main {
 
             boolean out = false;
             while (!out) {
-                System.out.println("You can choose from these three options what to do  ");
+                System.out.println("You can choose from these three options what to do ");
                 System.out.print("1. Book Management \n");
                 System.out.print("2. Customer  Management \n");
                 System.out.print("3. Sales Management \n");

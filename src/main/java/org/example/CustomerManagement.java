@@ -16,6 +16,7 @@ public class CustomerManagement {
     public void addNewRow() throws SQLException {
         String sqlAdd = "INSERT INTO customers(Name,Email,Phone) VALUES (?,?,?) ";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd)) {
+            connection.setAutoCommit(false);
             System.out.println("Enter the new customer Name ");
             String name = scanner.nextLine();
             System.out.println("Enter the new customer Email ");
@@ -26,7 +27,13 @@ public class CustomerManagement {
             preparedStatement.setString(2,email);
             preparedStatement.setString(3,phone);
             preparedStatement.executeUpdate();
+            connection.commit();
             System.out.println("Added was successful");
+        } catch (SQLException e) {
+            System.out.println("Rollback working don't worry");
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
     public void deleteRow() throws SQLException {
@@ -59,6 +66,7 @@ public class CustomerManagement {
     public void customerDetailsUpdate() throws SQLException {
         String sqlUpdate = "UPDATE customers SET Phone = ?, Email = ? WHERE CustomerID = ? ";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate)) {
+
             int customerId = 0;
             String phone = "";
             String email = "";
@@ -87,7 +95,6 @@ public class CustomerManagement {
             preparedStatement.setString(1,phone);
             preparedStatement.setString(2,email);
             preparedStatement.setInt(3,customerId);
-
 
             preparedStatement.executeUpdate();
             System.out.println("Customer details update was successful!");

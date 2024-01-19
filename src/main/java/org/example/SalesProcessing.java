@@ -21,6 +21,7 @@ public class SalesProcessing {
                 "VALUES (?,?,?,?,?) " ;
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlNewSale)){
             boolean out = false;
+            connection.setAutoCommit(false);
             System.out.println("If you want buy enter ` BookId");
             int bookId = -1;
             int customerId = -1;
@@ -68,14 +69,27 @@ public class SalesProcessing {
                         scanner.next();
                     }
             }
-            preparedStatement.setInt(1,bookId);
-            preparedStatement.setInt(2,customerId);
-            preparedStatement.setString(3,dateOfSale);
-            preparedStatement.setInt(4,quantitySold);
-            double totalPrice = getBookPrice(bookId)*quantitySold;
-            preparedStatement.setDouble(5,totalPrice);
-            preparedStatement.executeUpdate();
-            System.out.println("Buying was successful");
+                boolean config = false;
+                try {
+                    preparedStatement.setInt(1,bookId);
+                    preparedStatement.setInt(2,customerId);
+                    preparedStatement.setString(3,dateOfSale);
+                    preparedStatement.setInt(4,quantitySold);
+                    double totalPrice = getBookPrice(bookId)*quantitySold;
+                    preparedStatement.setDouble(5,totalPrice);
+                    preparedStatement.executeUpdate();
+                    System.out.println("Buying was successful");
+                    config = true;
+                } catch (SQLException e) {
+                    System.out.println("error");
+                } finally {
+                    if(config) {
+                        connection.commit();
+                    } else {
+                        connection.rollback();
+                    }
+                    connection.setAutoCommit(true);
+                }
         }
     }
 

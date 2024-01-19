@@ -23,18 +23,13 @@ Before running the application, ensure you have the following:
 - JDBC driver for PostgreSQL (included in the `lib` folder)
 
 ## Setup
-
-1. Clone the repository:
    
-   ```bash
-   git clone https://github.com/your-username/bookstore-management-system.git
-   
-2. Set up the database:
+1. Set up the database:
 
 - Create a PostgreSQL database named Bookstore_DB.
 - Execute the SQL script in db_setup.sql to create the necessary tables.
 
-3. Update the database connection details:
+2. Update the database connection details:
 
 - Open src/main/java/org/example/DatabaseConfig.java.
 - Modify the JDBC_URL, USERNAME, and PASSWORD fields with your PostgreSQL credentials.

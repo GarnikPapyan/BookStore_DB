@@ -46,7 +46,7 @@ public class Main {
                             System.out.print("2. Create list from genre \n");
                             System.out.print("3. Add new book \n");
                             System.out.print("4. Delete book \n");
-                            System.out.print("5. Out(Back one step) \n");
+                            System.out.print("5. Out(Back one step ) \n");
                             System.out.print("6. Exit Program \n");
                             String str2 = scanner.nextLine();
                             switch (str2) {

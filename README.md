@@ -10,18 +10,6 @@ Before running the application, ensure you have the following:
 - PostgreSQL database installed and running
 - JDBC driver for PostgreSQL (included in the `lib` folder)
 
-## Setup
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/bookstore-management-system.git
-
-  
-Конечно, вот пример README.md файла для вашего проекта:
-
-markdown
-Copy code
 # Bookstore Management System
 
 The Bookstore Management System is a Java application for managing book sales, customer information, and book inventory. The system uses a PostgreSQL database to store data and includes functionalities such as adding/updating books, managing customers, processing sales, and handling triggers for stock quantity updates.

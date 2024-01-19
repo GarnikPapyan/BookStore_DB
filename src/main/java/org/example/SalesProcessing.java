@@ -104,7 +104,8 @@ public class SalesProcessing {
                 String bookTitle = resultSet.getString("Title");
                 String customerName = resultSet.getString("Name");
                 String dateOfSale = resultSet.getString("DateOfSale");
-                System.out.println("Book: " + bookTitle +" " + "Customer Name: " + customerName + " " + "Date of Sale: " + dateOfSale);
+                System.out.println("Book: " + bookTitle +" " + "Customer Name: " + customerName + " "
+                        + "Date of Sale: " + dateOfSale);
                 System.out.println();
             }
         }

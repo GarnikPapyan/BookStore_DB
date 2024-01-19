@@ -16,11 +16,11 @@ public class CustomerManagement {
     public void addNewRow() throws SQLException {
         String sqlAdd = "INSERT INTO customers(Name,Email,Phone) VALUES (?,?,?) ";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd)) {
-            System.out.println("Enter th new customer Name ");
+            System.out.println("Enter the new customer Name ");
             String name = scanner.nextLine();
-            System.out.println("Enter th new customer Email ");
+            System.out.println("Enter the new customer Email ");
             String email = scanner.nextLine();
-            System.out.println("Enter th new customer Phone number ");
+            System.out.println("Enter the new customer Phone number ");
             String phone = scanner.nextLine();
             preparedStatement.setString(1,name);
             preparedStatement.setString(2,email);
@@ -38,7 +38,7 @@ public class CustomerManagement {
                 try {
                     System.out.println("Write the ID of the customer you want to delete");
                     customerID = scanner.nextInt();
-                    if(customerID > 0 && customerID <= rowCount()) {
+                    if(validCustomerId(customerID)) {
                         out = true;
                     } else {
                         System.out.println("Plz enter the valid customer ID!!! ");
@@ -67,7 +67,7 @@ public class CustomerManagement {
             while (!out) {
                 try {
                     customerId = scanner.nextInt();
-                    if (customerId <= rowCount() && customerId > 0) {
+                    if (validCustomerId(customerId)) {
                         out = true;
                     } else {
                         System.out.println("Not Valid customer ID, try again!");
@@ -112,13 +112,14 @@ public class CustomerManagement {
             while (!out) {
                 try {
                     customerID = scanner.nextInt();
-                    if(myList.contains(customerID) && customerID > 0 && customerID <= rowCount()) {
+                    if(myList.contains(customerID) && validCustomerId(customerID)) {
                         out = true;
                     } else {
                         System.out.println("ENer valid customer ID");
                     }
                 } catch (InputMismatchException e) {
                     System.out.println("Enter only Number(ID for Customer)");
+                    scanner.next();
                 }
             }
             preparedStatement.setInt(1,customerID);
@@ -135,11 +136,16 @@ public class CustomerManagement {
 
         }
     }
-    public int rowCount() throws SQLException{
-        try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM customers ")) {
-            resultSet.next();
-            return resultSet.getInt(1);
+    public boolean validCustomerId(int customerid) throws SQLException{
+        String sqlValidCustomer = "SELECT CustomerID FROM customers ";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlValidCustomer);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+            List <Integer> myList = new ArrayList<>();
+            while (resultSet.next()) {
+                myList.add(resultSet.getInt("CustomerID"));
+            }
+            return myList.contains(customerid);
         }
     }
+
 }

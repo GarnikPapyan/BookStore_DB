@@ -11,6 +11,9 @@ public class Main {
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             System.out.println("Successful connection to PostgreSQL ");
+
+
+
             Books books = new Books(connection);
             CustomerManagement customerManagement = new CustomerManagement(connection);
             SalesProcessing salesProcessing = new SalesProcessing(connection);
@@ -84,11 +87,11 @@ public class Main {
                             System.out.print("\n");
                             System.out.println("In Sales Management you can buying new books, " +
                                     "generate a report of all books sold,calculate total revenue by genre ");
-                            System.out.print("1. Buying new books");
-                            System.out.print("2. Report of all sold books");
-                            System.out.print("3. Total revenue by genre");
-                            System.out.print("4. Out(Back one step)");
-                            System.out.print("5. Exit program");
+                            System.out.print("1. Buying new books \n");
+                            System.out.print("2. Report of all sold books \n");
+                            System.out.print("3. Total revenue by genre \n");
+                            System.out.print("4. Out(Back one step) \n");
+                            System.out.print("5. Exit program \n");
                             String sell = scanner.nextLine();
                             switch (sell) {
                                 case "1" -> salesProcessing.newSales();

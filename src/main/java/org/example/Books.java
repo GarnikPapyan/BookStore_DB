@@ -60,7 +60,7 @@ public class Books {
 
 
     public void deleteRow() throws SQLException {
-        String sqlDelete = "DELETE FROM Books WHERE BookId = ? ";
+        String sqlDelete = "DELETE FROM books WHERE BookId = ? ";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete)){
             int bookId = -1;
             boolean out = false;
@@ -68,7 +68,7 @@ public class Books {
                 try {
                     System.out.println("Write the ID of the book you want to delete");
                     bookId = scanner.nextInt();
-                    if(bookId > 0 && bookId <= rowCount()) {
+                    if(validBookId(bookId)) {
                         out = true;
                     } else  {
                         System.out.println("Plz enter the valid book ID!!! ");
@@ -137,7 +137,7 @@ public class Books {
               try {
                   bookId = scanner.nextInt();
 
-                  if (bookId <= rowCount() && bookId > 0) {
+                  if (validBookId(bookId)) {
                       out = true;
                   } else {
                       System.out.println("Not Valid book ID, try again!");
@@ -171,11 +171,15 @@ public class Books {
         }
     }
 
-    public int rowCount() throws SQLException{
-        try(Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM books ")) {
-            resultSet.next();
-            return resultSet.getInt(1);
+    public boolean validBookId(int bookid) throws SQLException {
+        String sqlValidBook = "SELECT BookID FROM books ";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlValidBook);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+            List <Integer> myList = new ArrayList<>();
+            while (resultSet.next()) {
+                myList.add(resultSet.getInt("BookID"));
+            }
+            return myList.contains(bookid);
         }
     }
 

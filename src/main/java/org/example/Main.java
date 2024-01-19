@@ -119,7 +119,7 @@ public class Main {
                     default -> System.out.println("Plz enter 1 , 2 or 3");
                 }
             }
-            System.out.println("the end");
+            System.out.println("THE END");
 
         } catch (SQLException e) {
             System.out.println("Connection error to PostgreSQL " + e.getMessage() );
